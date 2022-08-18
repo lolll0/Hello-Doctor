@@ -1,0 +1,37 @@
+package kr.or.ddit.service;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import kr.or.ddit.dao.LoginSearchDoctorDAO;
+import kr.or.ddit.dto.DoctorVO;
+import kr.or.ddit.exception.InvalidPasswordException;
+import kr.or.ddit.exception.NotFoundIdException;
+
+public class LoginSearchDoctorServiceImpl  extends DoctorServiceImpl
+implements LoginSearchDoctorService {
+
+	private LoginSearchDoctorDAO doctorDAO;
+
+	public void setDoctorDAO(LoginSearchDoctorDAO doctorDAO) {
+		this.doctorDAO = doctorDAO;
+	}
+
+
+	@Override
+	public DoctorVO securityLogin(Map<String, String> map) throws SQLException, NotFoundIdException, InvalidPasswordException {
+
+		DoctorVO doctorVO  = doctorDAO.securityLogin(map);
+
+		String dpwd = map.get("dId");
+
+		if(doctorVO == null)throw new NotFoundIdException();
+
+        if(!doctorVO.getPwd().equals(dpwd)) throw new InvalidPasswordException();
+
+
+
+		return doctorVO;
+	}
+
+}

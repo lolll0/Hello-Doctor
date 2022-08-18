@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Manager-Mapper">
+
+<select id="doctorListForPage" resultType="doctorListVO">
+   select
+    a.d_id
+  , a.ma_no
+  , a.d_name
+  , a.tel
+  , a.status
+  , a.regdate
+  , a.resident_num
+  , a.account_status
+  , a.retiredate
+  , a.sus_startdate
+  , a.sus_enddate
+  ,(select b.ma_name from major b where a.ma_no = b.ma_no) as maName
+from
+    doctor a
+</select>
+
+<select id="doctorListCount" resultType="int">
+	select count(*) from doctor
+</select>
+
+<select id="doctorStatus" resultType="doctorListVO" parameterType="string">
+   select
+    a.d_id
+  , a.ma_no
+  , a.d_name
+  , a.tel
+  , a.status
+  , a.regdate
+  , a.resident_num
+  , a.account_status
+  , a.retiredate
+  , a.sus_startdate
+  , a.sus_enddate
+  , a.d_office
+  , a.d_exam
+  ,(select b.ma_name from major b where a.ma_no = b.ma_no) as maName
+from
+    doctor a
+where a.d_id = #{dId}
+</select>
+
+<update id="susDoctor" parameterType="doctorListVO">
+	update
+		doctor
+	set
+		account_status = '2',
+		sus_startdate = #{susStartDate},
+		sus_enddate = #{susEndDate}
+	where d_id = #{dId}
+</update>
+
+<update id="workDoctor" parameterType="string">
+	update
+		doctor
+	set
+		account_status = '1'
+	where d_id = #{dId}
+</update>
+
+<update id="retireDoctor" parameterType="doctorListVO">
+	update
+		doctor
+	set
+		account_status = '3',
+		retiredate = #{retireDate}
+	where d_id = #{dId}
+</update>
+
+<select id="ipListForPage" resultType="doctorListVO">
+	select
+		ip_no, ip_room
+	from
+		hospital_ip
+</select>
+<select id="ipListForCount" resultType="int">
+	select count(*) from hospital_ip
+</select>
+
+<update id="ipInsert" parameterType="doctorListVO">
+	insert into ip_doc
+	(ip_no, d_id) values(#{ipNo}, #{dId})
+</update>
+
+<select id="memberIp" parameterType="string" resultType="doctorListVO">
+	select ip_no, d_id from ip_doc where d_id = #{dId}
+</select>
+
+<update id="deleteIp" parameterType="doctorListVO">
+	delete from ip_doc where ip_no = #{ipNo} and d_id = #{dId}
+</update>
+</mapper>

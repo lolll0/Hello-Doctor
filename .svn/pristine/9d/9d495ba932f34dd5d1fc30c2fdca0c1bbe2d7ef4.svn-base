@@ -1,0 +1,102 @@
+package kr.or.ddit.dao;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.apache.ibatis.session.SqlSession;
+
+import kr.or.ddit.dto.CaseVO;
+import kr.or.ddit.dto.HistoryVO;
+
+public class HistoryDAOImpl implements HistoryDAO{
+	private SqlSession session;
+	private HistoryDAO historyDAO;
+
+	public void setSession(SqlSession session) {
+		this.session = session;
+	}
+
+	public void setHistoryDAO(HistoryDAO historyDAO) {
+		this.historyDAO = historyDAO;
+	}
+
+
+	@Override
+	public List<HistoryVO> diagnosisHistory(String dId) throws SQLException {
+		List<HistoryVO> diagnosisHistory = session.selectList("History-Mapper.diagnosisList",dId);
+		System.out.println("난 다오(진료히스토리)"+diagnosisHistory);
+		return diagnosisHistory;
+	}
+
+	@Override
+	public List<HistoryVO> CooperationHistory(String dId) throws SQLException {
+		List<HistoryVO> CooperationHistory = session.selectList("History-Mapper.CooperationList",dId);
+
+		return CooperationHistory;
+	}
+
+	@Override
+	public List<HistoryVO> selectbyMno(String mNo) throws SQLException {
+		List<HistoryVO> diagnosis = session.selectOne("History-Mapper.selectDiagnosisHistory",mNo);
+		return diagnosis;
+	}
+
+	@Override
+	public List<HistoryVO> selectbyComNo(String comNo) throws SQLException {
+		List<HistoryVO> Cooperation = session.selectOne("History-Mapper.selectCooperationHistory",comNo);
+		return Cooperation;
+	}
+
+	@Override
+	public List<HistoryVO> alarmList(String dId) throws SQLException {
+		List<HistoryVO> alarmList = session.selectList("History-Mapper.alarmListFirst",dId);
+		return alarmList;
+	}
+
+	@Override
+	public List<HistoryVO> sendList(String dId) throws SQLException {
+		List<HistoryVO> sendList = session.selectList("History-Mapper.sending",dId);
+		return sendList;
+	}
+
+	@Override
+	public List<HistoryVO> NoticeList(String dId) throws SQLException {
+		List<HistoryVO> NoticeList = session.selectList("History-Mapper.NoticeList",dId);
+		System.out.println("공지다오"+NoticeList);
+		return NoticeList;
+	}
+
+	@Override
+	public List<HistoryVO> CaseDiscussionList(String dId) throws SQLException {
+		List<HistoryVO> sendList = session.selectList("History-Mapper.LikeCaseList",dId);
+		return sendList;
+	}
+
+	@Override
+	public List<HistoryVO> LikeOrderList(String dId) throws SQLException {
+		List<HistoryVO> sendList = session.selectList("History-Mapper.Likeorderset",dId);
+		return sendList;
+	}
+
+	@Override
+	public List<CaseVO> selectCase() throws SQLException {
+		List<CaseVO> list = session.selectList("Case-Mapper.selectCase");
+		return list;
+	}
+
+	@Override
+	public List<HistoryVO> Notice(String dId) throws SQLException {
+		List<HistoryVO> notice = session.selectList("History-Mapper.NoticeBoard",dId);
+		return notice;
+	}
+
+//	@Override
+//	public List<HistoryVO> LogList(String dId) throws SQLException {
+//		List<HistoryVO> logList = session.selectList("History-Mapper.logHistory",dId);
+//		return logList;
+//	}
+//
+
+
+
+}

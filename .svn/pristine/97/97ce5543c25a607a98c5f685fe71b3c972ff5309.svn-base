@@ -1,0 +1,620 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Register</title>
+	<script language="javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+    <link href="<%=request.getContextPath()%>/resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/resources/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/resources/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/resources/css/animate.css" rel="stylesheet">
+    <link href="<%=request.getContextPath()%>/resources/css/style.css" rel="stylesheet">
+
+<style type="text/css">
+body {
+   width: 1200px;
+   margin: 0 auto;
+}
+
+.fa-5x {
+    font-size: 10em;
+}
+
+.fa-3x {
+    font-size: 1.5em;
+}
+
+.form-control{
+
+	float: right;
+    margin-bottom: 5px;
+    width: 311px;
+}
+
+
+.registdiv{
+    float: left;
+
+}
+
+.loginscreen.middle-box {
+    width: 400px;
+}
+
+.logo-name {
+  color: #353030;
+    font-weight: bold;
+    letter-spacing: -10px;
+    margin-bottom: 0;
+    margin-left: 60px;
+}
+
+ul{
+left: 488px !important;
+
+}
+
+.dropdown-menu {
+ left:200px !important;
+
+
+
+}
+
+::placeholder {
+
+	font-size: 11px;
+	  opacity: 1;
+
+}
+
+div{
+    font-weight: bold;
+
+}
+
+</style>
+
+
+</head>
+
+
+
+
+<body class="gray-bg">
+
+
+		 <button class="btn btn-primary " name="phonecheckbtn" type="button" style="position: absolute;margin-left: 723px;margin-top: 418px;border: 2px solid #0ea6d7;background-color: #0ea6d7;z-index: 1;visibility:hidden; ">
+                                             <i class="fa fa-check"></i>&nbsp;인증완료</button>
+		 <button class="btn btn-primary " name="emailckbtn" type="button" style="position: absolute;margin-left: 723px;margin-top: 458px;border: 2px solid #0ea6d7;background-color: #0ea6d7;z-index: 1;visibility:hidden; ">
+                                             <i class="fa fa-check"></i>&nbsp;인증완료</button>
+<div>
+    <div class="middle-box text-center loginscreen   animated fadeInDown">
+			<form class="m-t" id="submit" action="regist" enctype="multipart/form-data" method="POST" style="width: 420px;">
+				<div>
+					<h1 class="logo-name" style="font-size: 50px;">회원가입</h1>
+				</div>
+				<h3 style="margin-left: 60px;">HELLO DOCTOR</h3>
+				<div>
+					<div style="margin-left: -11px; position: absolute;">
+						<img style="position: absolute; width: 130px; height: 124px;" alt="프로필" id="profilepic" src="/ddit/resources/img/user.png">
+						<label for="inputFile" style="width: 200px;">
+						   <i class="fa fa-camera fa-3x" style="margin-left: 83px; margin-top: 101px; color: #1ab394;" onclick="profile()"></i>
+						</label>
+					</div>
+				</div>
+
+				<div>
+					<div class="form-group">
+						<div class="registdiv" style="margin-left: 75px; padding-top: 8px;">이름</div>
+						<input type="text" class="form-control" required="" name="dName" id="dName" placeholder="eX)홍길동" onkeyup="this.value=this.value.trim();" style="width: 311px;">
+					</div>
+
+
+					<div style="display: inline-block; width: 100%;">
+						<div>
+							<div class="registdiv" style="text-align: right; display: inline-block; margin-left: 75px; margin-top: 7px; ">전공</div>
+							<input type="text" placeholder="ex)호흡기내과" class="typeahead_1 form-control" style="width: 311px;margin-bottom: -1px;" id="maName" name="maName">
+						</div>
+
+					</div>
+
+					<div style="display: inline-block; width: 100%;">
+						<div>
+							<div class="registdiv" style="text-align: right; display: inline-block; margin-left: 51px; margin-top: 7px;">세부전공</div>
+							<input type="text" placeholder="ex)만성기침" class="form-control" style="width: 311px;" id="smName" name="smName">
+						</div>
+
+					</div>
+
+
+
+					<!-- 			<div class="form-group"> -->
+					<!-- 				<div class="registdiv" style="padding-top: 16px;">주민등록번호</div> -->
+					<!-- 				<input placeholder="주민번호" maxlength="6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" style="width: 36%; float: left; margin-left: 10px;" name="firstRnum" id="firstRnum" -->
+					<!-- 					required=""> -->
+					<!-- 				<p style="position: absolute; margin-left: 239px; margin-top: 63px;">─</p> -->
+					<!-- 				<input maxlength="7" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="password" class="form-control" style="width: 36%; float: left; margin-left: 24px;" name="secondRnum" id="secondRnum" required=""> -->
+					<!-- 			</div> -->
+
+
+
+
+					<div class="form-group" style="display: inline-block; margin-top: -6px; margin-bottom: -5px;">
+						<div class="registdiv" style="margin-left: 62px;margin-top: 8px;position: absolute;">아이디</div>
+						<input type="text" class="form-control" required="" name="dId" id="dId" placeholder="4~12 영문자  숫자" onkeyup="this.value=this.value.replace(/[\ㄱ-ㅎㅏ-ㅣ가-힣]/g, '');" style="width: 311px;margin-left: 109px;">
+						<button class="btn btn-primary" style="position: absolute;margin-left: 350px;margin-top: 1px;width: 70px;" type="button" onclick="idCheck_go();">
+							&nbsp;중복<i class="fa fa-check"></i>
+						</button>
+					</div>
+					<div class="form-group">
+						<div class="registdiv" style="margin-left: 49px; margin-top: 8px;">비밀번호</div>
+						<input type="password" class="form-control passcheck" placeholder="4~12 영문자 숫자" required="" name="pwd" id="pwd">
+					</div>
+					<div class="form-group">
+						<div class="registdiv" style="padding-top: 21px; margin-left: 20px;">비밀번호 확인</div>
+						<input type="password" class="form-control passcheck" placeholder="비밀번호 확인" required="" id="pwdcheck"> <span id="alert-success" style="display: none; position: absolute; margin-top: 62px; margin-left: 7px;">비밀번호가 일치합니다.</span> <span
+							id="alert-danger" style="display: none; color: #d92742; font-weight: bold; position: absolute; margin-top: 62px; margin-left: 7px;">비밀번호가 일치하지 않습니다.</span>
+					</div>
+				</div>
+
+
+
+				<div class="form-group">
+					<div class="registdiv" style="padding-top:35px; margin-left: 20px;">주민등록번호</div>
+					<input placeholder="ex)123456" maxlength="6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="text" class="form-control" style="width: 32%; float: left; margin-left: 10px; margin-top: 14px;" name="firstRnum" id="firstRnum"
+						required="">
+					<p style="position: absolute; margin-left: 258px; margin-top: 86px;">─</p>
+					<input placeholder="ex)1234567"  maxlength="7" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" type="password" class="form-control" style="width: 32%; margin-left: 24px; margin-top: 14px;" name="secondRnum" id="secondRnum" required="">
+				</div>
+
+
+				<!-- 			<div style="display: inline-block; width: 100%;"> -->
+				<!-- 				<div> -->
+				<!-- 					<div class="registdiv" style="text-align: right; display: inline-block; margin-left: 54px; margin-top: 7px;">전공</div> -->
+				<!-- 					<input type="text" placeholder="과를 입력해 주세요" class="typeahead_1 form-control" style="width: 78%;" id="maName" name="maName"> -->
+				<!-- 				</div> -->
+
+				<!-- 			</div> -->
+
+
+
+
+				<div class="form-group" style="display: inline-block;">
+					<div class="registdiv" style="padding-top: 7px; margin-left: 45px;">전화번호</div>
+					<input maxlength="11" type="text" class="form-control" placeholder="ex)01012345678" required="" name="tel" id="tel" style="margin-left: 12px;">
+					<button id="telcheck" class="btn btn-primary " name="phonebtn" type="button" style="margin-left: 325px; margin-top: -67px; visibility: visible;">
+						<i class="fa fa-check"></i>&nbsp;인증요청
+					</button>
+
+				</div>
+				<div class="form-group" style="display: inline-block; margin-bottom: 0px;">
+					<div class="registdiv" style="margin-left: 57px; position: absolute; margin-top: -30px;">이메일</div>
+					<input type="email" class="form-control" placeholder="ex)ample@naver.com" name="email" id="email" style="margin-top: -36px;margin-left: 109px; ">
+					<button id="mailcheck" class="btn btn-primary " name="mailcheck" type="button" style="margin-left: 325px; margin-top: -66px; visibility: visible;">
+						<i class="fa fa-check"></i>&nbsp;인증요청
+					</button>
+
+				</div>
+				<div class="form-group" style="display: inline-block; margin-bottom: 0px;">
+					<div class="registdiv" style="margin-left: 70px; margin-top: -12px;">OTP</div>
+					<input type="text" class="form-control" placeholder="http://chart.apis...." required="" name="otpQr" id="otpQr" style="margin-top: -21px;">
+					<button class="btn btn-primary " type="button" style="margin-left: 326px; margin-top: -66px;" name="otpbtn" id="otpbtn" onclick="otp_go();">
+						<i class="fa fa-check"></i>&nbsp;OTP생성
+					</button>
+
+					<button class="btn btn-primary " type="button" style="position: absolute; margin-left: -73px; margin-top: -39px; border: 2px solid #0ea6d7; background-color: #0ea6d7;
+					        visibility: hidden;  width: 72px; height: 33px;" name="otpcopybtn" id="otpcopybtn">
+						<i class="fa fa-external-link"></i>&nbsp;이동
+					</button>
+				</div>
+
+				<div class="form-group">
+					<div class="registdiv" style="margin-left: 70px; margin-top: -12px;">KEY</div>
+					<input type="text" class="form-control" placeholder="ex) ABCDEF" required="" name="otpCo" id="otpCo" style="margin-top: -20px;">
+				</div>
+
+
+
+				<button type="button" class="btn btn-primary block full-width m-b" onclick="regist_go('regist');">Register</button>
+
+<!-- 				<a class="btn btn-sm btn-white btn-block" href="/ddit/login/loginForm">Login</a> <input type="file" style="display: none;" id="inputFile" name="file"> -->
+			</form>
+		</div>
+</div>
+
+    <!-- Mainly scripts -->
+    <script src="<%=request.getContextPath()%>/resources/js/jquery-3.1.1.min.js"></script>
+    <script src="<%=request.getContextPath()%>/resources/js/popper.min.js"></script>
+    <script src="<%=request.getContextPath()%>/resources/js/bootstrap.js"></script>
+    <!-- iCheck -->
+    <script src="<%=request.getContextPath()%>/resources/js/plugins/iCheck/icheck.min.js"></script>
+<script
+		src="<%=request.getContextPath()%>/resources/js/plugins/typehead/bootstrap3-typeahead.min.js"></script>
+    <!-- openWindow -->
+    <script src="<%=request.getContextPath()%>/resources/js/common.js"></script>
+
+
+<script type="text/javascript">
+	// 프로필 사진 등록
+	$(document).on(
+					"change",
+					"#inputFile",
+					function profile() {
+
+						var picture = $(this);
+						console.log(picture)
+
+						var fileFormat = picture.val().substr(
+								picture.val().lastIndexOf(".") + 1)
+								.toUpperCase();
+						if (!(fileFormat == "JPG" || fileFormat == "JPEG" || fileFormat == "PNG")) {
+							alert("이미지는 jpg/jpeg 형식만 가능합니다.");
+							return;
+						}
+
+						//이미지 파일 용량 체크
+						if (picture[0].files[0].size > 1024 * 1024 * 5) {
+							alert("사진 용량은 5MB 이하만 가능합니다.");
+							return;
+						}
+						;
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							var result = reader.result
+							$('#profilepic').attr('src', result);
+						}
+						reader.readAsDataURL(picture[0].files[0]);
+
+					});
+</script>
+
+
+
+
+<script>
+ $(document).ready(function(){
+     $('.i-checks').iCheck({
+         checkboxClass: 'icheckbox_square-green',
+         radioClass: 'iradio_square-green',
+     });
+ });
+</script>
+
+
+
+<script>
+// 아이디 중복 체크
+var checkedID = "";
+let flag = false;
+let mailflag = false;
+
+function idCheck_go(){
+	//alert('id check btn click');
+var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
+
+	var input_ID = $('input[name="dId"]');
+
+	 //아이디 유효성검사
+	  if(!getCheck.test($("#dId").val())){
+	        alert("형식에 맞게 입력해주세요");
+	        $("#dId").val("");
+	        $("#dId").focus();
+	        return false;
+	   }
+
+
+	if(!input_ID.val()){
+		alert("아이디를 입력하시오");
+		input_ID.focus();
+		return;
+	}
+
+	$.ajax({
+		url : "<%=request.getContextPath()%>/doctor/idCheck.do?dId=" + input_ID.val().trim(),
+		method : "get",
+		success : function(result){
+			if(result.toUpperCase() == "DUPLICATED"){
+				alert("중복된 아이디 입니다.");
+				$('input[name="dId"]').focus();
+			}else{
+				alert("사용가능한 아이디 입니다.");
+				checkedID = input_ID.val().trim();
+				$('input[name="dId"]').val(input_ID.val().trim());
+			}
+		},
+		error : function(error){
+			alert("시스템 장애로 가입이 불가합니다");
+		}
+	})
+}
+
+//전화번호 인증 성공시 style 바꿈
+function parent_function(){
+	$('button[name=phonecheckbtn]').css("visibility","visible")
+	$('#tel').attr('readonly','readonly')
+	$('#telcheck').css("visibility","hidden")
+	flag = true;
+
+}
+
+//이메일 인증 성공시 style 바꿈
+function parent_emailfunction(){
+	$('button[name=emailckbtn]').css("visibility","visible")
+	$('#email').attr('readonly','readonly')
+	$('#mailcheck').css("visibility","hidden")
+	mailflag = true;
+
+}
+
+// 전화번호 인증
+$('#telcheck').on('click',function(){
+// 	 var txt = {"tel" : $('#tel').val()};
+
+	 OpenWindow('<%=request.getContextPath()%>/regist/phonecheck?number='+$('#tel').val(), 'PopupWin',470,400);
+
+
+});
+
+
+// 메일 인증
+$('#mailcheck').on('click',function(){
+
+	OpenWindow('<%=request.getContextPath()%>/regist/emailcheck?email='+$('#email').val(), 'PopupWin',470,400);
+
+})
+
+
+
+
+
+
+//비밀번호 확인
+$('.passcheck').focusout(function () {
+    var pwd1 = $("#pwd").val();
+    var pwd2 = $("#pwdcheck").val();
+
+    if ( pwd1 != '' && pwd2 == '' ) {
+        null;
+    } else if (pwd1 != "" || pwd2 != "") {
+        if (pwd1 == pwd2) {
+            $("#alert-success").css('display', 'inline-block');
+            $("#alert-danger").css('display', 'none');
+        } else {
+            $("#alert-success").css('display', 'none');
+            $("#alert-danger").css('display', 'inline-block');
+
+        }
+    }
+});
+
+// 전공 자동완성
+$('.typeahead_1').typeahead({
+	 autoSelect: true,
+    minLength: 2,
+    delay: 0,
+	source : function(word, process) { //source: 입력시 보일 목록
+		var text = {"word": word};
+	     $.ajax({
+	           url :"<%=request.getContextPath()%>/regist/major"
+	         , type : "POST"
+	         , dataType: "JSON"
+	         , data : 	JSON.stringify(text)// 검색 키워드
+	         , contentType : 'application/json'
+	         , success : function(response){ 	// 성공
+	        	return process(response);
+	         }
+	         ,error : function(){ //실패
+	             alert("자동완성 실패");
+	         }
+	     });
+	 }
+
+});
+// var num = 60 * 3;
+// var myVar;   
+// function time(){
+// 	   myVar = setInterval(alertFunc, 1000);     
+// 	}   
+//     time();
+// 	function alertFunc() {
+// 		var min = num / 60;
+// 		    min = Math.floor(min);
+// 		var sec = num - (60 * min);
+// 		      console.log(min)
+// 		      console.log(sec)  
+// 	    var $input = $('.input').val(min + '분' + sec + '초'); 
+
+// 	   if(num == 0){
+// 		   clearInterval(myVar)
+// 	   }
+// 	   num--;
+
+// 	}
+
+
+
+function otp_go(){
+
+	$.ajax({
+		type:"POST",
+		url:"<%=request.getContextPath()%>/otp/",
+		success: function(res){
+// 			alert("res"+res.url);
+			// OtpController에서 QR 주소를 가져옴
+			$('input[name=otpQr]').attr('value',res.url);
+			$('button[name=otpbtn]').css('visibility','hidden');
+			$('button[name=otpcopybtn]').css('visibility','visible').attr('onclick', 'OpenWindow('+"'"+res.url+"'"+')');
+			$('input[name=otpCo]').attr('value',res.encodedKey);
+
+		},
+		error: function(xhr){
+			alert("오류:"+xhr);
+		}
+	})
+
+}
+
+function regist_go(){
+	//alert("regist btn click");
+
+     var getCheck= RegExp(/^[a-zA-Z0-9]{4,12}$/);
+     var fmt = RegExp(/^\d{6}[1234]\d{6}$/); //형식 설정
+     var buf = new Array(13); //주민등록번호 배열
+
+
+	if(!$('input[name="dId"]').val()){
+		alert("아이디는 필수입니다.")
+		return;
+	}
+
+	if($('input[name="dId"]').val()!= checkedID){
+		alert("아이디는 중복 확인이 필요합니다.")
+		return;
+	}
+
+	if(!$('input[name="pwd"]').val()){
+		alert("패스워드는 필수입니다.")
+		return;
+	}
+
+	//비밀번호 공백 확인
+    if($("#pwd").val() == ""){
+      alert("패스워드 입력바람");
+      $("#pwd").focus();
+      return false;
+    }
+
+    //비밀번호 유효성검사
+    if(!getCheck.test($("#pwd").val())){
+      alert("비밀번호 형식에 맞게 입력해주세요");
+      $("#pwd").val("");
+      $("#pwd").focus();
+      return false;
+    }
+
+	if(!$('input[name="dName"]').val()){
+		alert("이름은 필수입니다.")
+		return;
+	}
+
+	if(!$('input[name="firstRnum"]').val()){
+		alert("주민등록번호는 필수입니다.")
+		return;
+	}
+
+	if(!$('input[name="secondRnum"]').val()){
+		alert("주민등록번호는 필수입니다.")
+		return;
+	}
+
+	// 주민 유효성
+	if(check_jumin() ==false){
+        return false;
+      }
+
+	if(!$('input[name="email"]').val()){
+		alert("이메일은 필수입니다.")
+		return;
+	}
+
+	if(!$('input[name="maName"]').val()){
+		alert("전공은 필수입니다.")
+		return;
+	}
+	if(!$('input[name="smName"]').val()){
+		alert("세부전공은 필수입니다.")
+		return;
+	}
+
+	if(!$('input[name="otpQr"]').val()){
+		alert("OTP는 필수입니다.")
+		return;
+	}
+
+	if(!$('input[name="tel"]').val()){
+		alert("전화번호는 필수입니다.")
+		return;
+	}
+
+	 if(!flag){
+		alert("전화번호 인증은 필수입니다.")
+		return;
+	}
+
+	 if(!mailflag){
+		alert("메일 인증은 필수입니다.")
+		return;
+	}
+
+
+
+
+	var form = $('#submit');
+
+	form.submit();
+
+}
+
+// 주민번호 유효성 체크
+function check_jumin(){
+    var jumins3 = $("#firstRnum").val() + $("#secondRnum").val();
+    //주민등록번호 생년월일 전달
+
+    var fmt = RegExp(/^\d{6}[1234]\d{6}$/)  //포멧 설정
+    var buf = new Array(13);
+
+    //주민번호 유효성 검사
+    if (!fmt.test(jumins3)) {
+      alert("주민등록번호 형식에 맞게 입력해주세요");
+      $("#firstRnum").focus();
+      return false;
+    }
+
+    //주민번호 존재 검사
+    for (var i = 0; i < buf.length; i++){
+      buf[i] = parseInt(jumins3.charAt(i));
+    }
+
+    var multipliers = [2,3,4,5,6,7,8,9,2,3,4,5];// 밑에 더해주는 12자리 숫자들
+    var sum = 0;
+
+    for (var i = 0; i < 12; i++){
+    sum += (buf[i] *= multipliers[i]);// 배열끼리12번 돌면서
+  }
+
+  if ((11 - (sum % 11)) % 10 != buf[12]) {
+    alert("잘못된 주민등록번호 입니다.");
+    $("#firstRnum").focus();
+    return false;
+  }
+
+  var birthYear = (jumins3.charAt(6) <= "2") ? "19" : "20";
+  birthYear += $("#firstRnum").val().substr(0, 2);
+  var birthMonth = $("#firstRnum").val().substr(2, 2);
+  var birthDate = $("#firstRnum").val().substr(4, 2);
+  var birth = new Date(birthYear, birthMonth, birthDate);
+
+
+  $("#year").val(birthYear);
+  $("#month").val(birthMonth);
+  $("#date").val(birthDate);
+}
+
+
+</script>
+
+
+</body>
+
+</html>

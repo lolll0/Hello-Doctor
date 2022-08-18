@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Main-Mapper">
+	<select id="mainIssueList" parameterType="str" resultType="mainVO">
+		select a.iss_title, b.iss_yn , ac.pname as p_name, ac.mdate as m_date
+      from issue a, issue_readyn b ,(select a.m_no, a.iss_no as ino, c.p_name as pname, a.m_date as mdate
+       from medi_reco a, com_reco b, patient c
+      where a.m_no = b.m_no
+        and a.p_no = c.p_no
+        and b.com_no in (select a.com_no
+     from com_reco a, co_med b, co_doctor c
+    where a.co_no = b.co_no
+      and b.co_no =c.co_no
+      and c.d_id=#{dId}
+      and b.co_ing_status='1'
+      and c.paty_yn='Y')) ac
+     where a.iss_no=b.iss_no
+       and a.iss_no = ac.ino
+
+	</select>
+
+	<select id="mainComRecoList" parameterType="str" resultType="mainVO" >
+	  select c.d_name, b.m_name, a.com_date,d.ma_name
+     from com_reco a, medi_reco b, doctor c, major d
+    where a.m_no= b.m_no
+      and c.d_id = b.d_id
+      and c.ma_no=d.ma_no
+      and a.com_no in ( select a.com_no
+     from com_reco a, co_med b, co_doctor c
+    where a.co_no = b.co_no
+      and b.co_no =c.co_no
+      and c.d_id=#{dId}
+      and b.co_ing_status='1'
+      and c.paty_yn='Y')
+
+
+	</select>
+
+
+
+
+</mapper>

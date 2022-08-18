@@ -1,0 +1,22 @@
+package kr.or.ddit.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+public class CommonController {
+
+	@RequestMapping("index")
+	public String page(String page ,Model model) {
+		String url = "/common/indexPage";
+		
+		if(page == null || page.equals("")){
+			page = "/common/main";
+		}
+		page = page.replaceAll("amp;", "&");
+		model.addAttribute("page", page);
+		
+		return url;
+	}
+}

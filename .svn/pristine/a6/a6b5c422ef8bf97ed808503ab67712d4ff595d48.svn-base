@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Doctor-Mapper">
+	<select id="doctorLogin" resultType="doctorVO"
+		parameterType="doctorVO">
+		select
+		a.d_id
+		,a.ma_no
+		,a.d_name
+		,a.pwd
+		,a.tel
+		,a.email
+		,a.status
+		,a.d_pic
+		,a.regdate
+		,a.account_status
+		,a.resident_num
+		,a.retiredate
+		,a.sus_startdate
+		,a.sus_enddate
+		,b.ma_name
+		,a.otp_co
+		from doctor a , major b
+		where a.ma_no = b.ma_no
+		and d_id = #{dId}
+	</select>
+
+	<select id="selectDoctorVO" resultType="doctorVO"
+		parameterType="str">
+		select
+		a.d_id
+		,a.ma_no
+		,a.d_name
+		,a.pwd
+		,a.tel
+		,a.email
+		,a.status
+		,a.d_pic
+		,a.regdate
+		,a.account_status
+		,a.resident_num
+		,a.retiredate
+		,a.sus_startdate
+		,a.sus_enddate
+		,b.ma_name
+		from doctor a , major b
+		where a.ma_no = b.ma_no
+		and d_id = #{dId}
+
+
+	</select>
+
+	<update id="profileChange" parameterType="doctorVO">
+		update doctor
+		set
+		status = #{status}
+		where
+		d_id =#{dId}
+	</update>
+	<select id="searchDoctorName" resultType="str">
+		select d_name
+		from doctor
+		where d_id = #{dId}
+	</select>
+	<select id="majorList" resultType="majorVO">
+		SELECT
+		ma_name,
+		ma_no
+		FROM
+		major
+
+	</select>
+
+	<select id="majorDoctors" resultType="majorVO">
+		select a.ma_name, b.d_id, b.d_name, b.d_pic, c.sm_name
+		from major a, doctor b, sub_major c
+		where a.ma_no = b.ma_no
+		and b.d_id = c.d_id
+		and a.ma_no = #{maNo}
+		and b.d_id != #{dId}
+	</select>
+	<select id="detailDoctor" resultType="majorVO">
+		select a.ma_name, b.d_id, b.d_name, b.d_pic, c.sm_name, b.status, b.tel
+		from major a, doctor b, sub_major c
+		where a.ma_no = b.ma_no
+		and b.d_id = c.d_id
+		and b.d_id = #{doId}
+	</select>
+	<select id="coDoctor" resultType="coDoctorVO">
+	select a.end_date, b.p_name , a.co_disease   from co_med a, patient b
+where  a.p_no = b.p_no
+and a.end_date is not null
+and a.co_no in
+(select c.co_no from co_doctor c where c.d_id =#{dId}
+INTERSECT
+    select d.co_no from co_doctor d where d.d_id =#{doId}
+)
+	</select>
+
+	<update id="doctorStatusReset" parameterType="str">
+	update doctor
+    set status ='0'
+  where d_id=#{dId}
+	</update>
+
+	<update id="doctorStatusStart" parameterType="str">
+	update doctor
+    set status ='1'
+  where d_id=#{dId}
+	</update>
+
+	<select id="findId" resultType="str">
+		select d_id
+	      from doctor
+	     where resident_num=#{residentNum}
+           and d_name =#{dName}
+	</select>
+
+
+	<select id="findpass" resultType="str">
+		select pwd
+  		  from doctor
+         where resident_num=#{residentNum}
+           and d_name = #{dName}
+           and d_id = #{dId}
+	</select>
+
+	<select id="sendMail" resultType="str">
+		select email
+  		  from doctor
+         where resident_num=#{residentNum}
+           and d_name = #{dName}
+           and d_id = #{dId}
+	</select>
+
+
+	<update id="modifyPass">
+	update doctor
+	   set pwd = #{pwd}
+	 where d_id = #{dId}
+	</update>
+
+	<select id="securityLogin" resultType="doctorVO">
+	select d_id,pwd
+	  from doctor
+	 where d_id=#{dId}
+	   and pwd=#{pwd}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

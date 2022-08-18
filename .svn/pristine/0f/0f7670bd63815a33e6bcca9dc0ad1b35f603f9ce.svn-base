@@ -1,0 +1,102 @@
+package kr.or.ddit.controller;
+
+import java.sql.SQLException;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import kr.or.ddit.dto.CaseVO;
+import kr.or.ddit.dto.DoctorVO;
+import kr.or.ddit.dto.HistoryVO;
+import kr.or.ddit.service.HistoryService;
+
+@Controller
+@RequestMapping("/history")
+public class HistoryController {
+
+	HttpSession session = null;
+
+	@Autowired
+	private HistoryService service;
+
+	@RequestMapping("/main") //기능
+	public ModelAndView request(HttpServletRequest request, ModelAndView mnv) throws SQLException{
+		String url = "history/main";
+		session = request.getSession();
+		DoctorVO doctorLogin = (DoctorVO) session.getAttribute("doctorLogin");
+		String dId = doctorLogin.getdId();
+		System.out.println(dId);
+
+		//진료히스토리
+		List<HistoryVO> diagnosis = service.diagnosisHistory(dId);
+		mnv.addObject("diagnosis",diagnosis);
+		//협진히스토리
+		List<HistoryVO> Cooperation = service.CooperationHistory(dId);
+		mnv.addObject("Cooperation",Cooperation);
+		//공지사항
+		List<HistoryVO> noticeList = service.NoticeList(dId);
+		mnv.addObject("noticeList",noticeList);
+		//알림 -협진요청받은것
+		List<HistoryVO> comingalarm = service.alarmList(dId);
+		mnv.addObject("comingalarm",comingalarm);
+		//협진요청 보낸기록
+		List<HistoryVO> sending = service.sendList(dId);
+		mnv.addObject("sending",sending);
+		//토론좋아요
+		List<HistoryVO> caseList = service.CaseDiscussionList(dId);
+		mnv.addObject("caseList",caseList);
+		//오더세트 좋아요
+		List<HistoryVO> OrderList = service.LikeOrderList(dId);
+		mnv.addObject("OrderList",OrderList);
+		//로그
+//		List<HistoryVO> logList = service.LogHistory(dId);
+//		mnv.addObject("logList",logList);
+		//CaseDiscussion 상세보기 클릭
+//		List<CaseVO> selectCase = service.
+		mnv.setViewName(url);
+		return mnv;
+	}
+
+	@RequestMapping("/diagnosis_history") //기능
+	public String diagnosis_history(){
+		String url = "history/diagnosis_history";
+		return url;
+	}
+
+	@RequestMapping("/cooperation_history") //기능
+	public String cooperation_history(){
+		String url = "history/cooperation_history";
+		return url;
+	}
+
+	@RequestMapping("/mylog2") //기능
+	public String mylog(){
+		String url = "history/mylog2";
+		return url;
+	}
+
+	@RequestMapping("notice")
+	public ModelAndView notice(HttpServletRequest request, ModelAndView mnv)throws SQLException {
+		String url = "history/notice";
+		session = request.getSession();
+		DoctorVO doctorLogin = (DoctorVO) session.getAttribute("doctorLogin");
+		String dId = doctorLogin.getdId();
+		System.out.println(dId);
+
+		List<HistoryVO> NotcieBoard = service.Notice(dId);
+		mnv.addObject("NotcieBoard",NotcieBoard);
+		mnv.setViewName(url);
+		return mnv;
+	}
+}

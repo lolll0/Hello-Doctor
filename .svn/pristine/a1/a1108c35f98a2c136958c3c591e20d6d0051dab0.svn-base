@@ -1,0 +1,498 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+body{
+font-size: 12px;
+}
+.container {
+	max-width: none;
+}
+
+.row {
+	margin-top: 2px;
+	margin-bottom: 2px;
+}
+
+.col-md-6 {
+	height: 400px;
+}
+
+.col-md-4 {
+	height: 440px;
+}
+
+.ibox-content {
+	padding: 8px 8px 8px 8px;
+}
+
+.ibox-content-2 {
+	border: 3px solid #1F4690;
+	border-radius: 20px;
+}
+
+h4 {
+	margin-left: 15px;
+}
+.nonActive{
+	border: 1px solid #dee2e6;
+    background: #8080800f;
+    color: #80808094;
+}
+.nav-tabs .nav-link {
+    border: 1px solid #dee2e6;
+  }
+</style>
+</head>
+<body>
+<h2>히스토리</h2>
+<hr style="background-color:black;">
+
+	<div class="container">
+
+		<div class="row">
+						<div class="col-md-5" style="padding-left: 5px; padding-right: 0px;">
+				<div class="ibox-content" style="height: 371px; margin-bottom: -15px;">
+
+					<div class="tabs-container">
+						<ul class="nav nav-tabs" role="tablist">
+							<li><a class="nav-link active" id="tab3"   data-toggle="tab" href="#tab-3"> 협진요청</a></li>
+							<li><a class="nav-link" id="tab4"   data-toggle="tab" href="#tab-4">요청협진현황</a></li>
+						</ul>
+						<div class="tab-content">
+							<div role="tabpanel" id="tab-3" class="tab-pane active">
+								<div class="panel-body" style="padding: 0px;">
+									<div class="ibox-content" style="height:314px; padding-top:0px;">
+										<table class="table table-hover">
+											<tbody>
+												<c:forEach items="${comingalarm}" var="comingalarm" begin="0" end="10" step="1">
+													<tr onclick="cooperation_read('${comingalarm.notiNo}',this)">
+														<td><c:if test="${comingalarm.read eq '1'}">
+																<img alt="프로필" src="<%=request.getContextPath()%>/resources/img/notification.png" style="width: 20px; height: 20px;">
+															</c:if></td>
+														<td>${comingalarm.maName}&nbsp;${comingalarm.dName}님의 협진요청입니다
+															&emsp;&emsp;&emsp;</td>
+														<td><i class="fa fa-calendar"></i>${comingalarm.notiDate}</td>
+													</tr>
+													<tr>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<div role="tabpanel" id="tab-4" class="tab-pane">
+								<div class="panel-body" style="padding: 0px;">
+									<div class="ibox-content" style="height:314px; padding-top:0px;" >
+
+										<table class="table table-hover">
+
+											<tbody>
+												<c:forEach items="${sending}" var="sending" begin="0" end="10" step="1" >
+													<tr onclick="window.open('cooperation_receive.do','',678,695);return false;">
+														<td>${sending.maName}&nbsp;${sending.dName}님의 협진요청입니다</td>
+														<td><i class="fa fa-calendar"></i>${sending.notiDate}</td>
+														<td><c:if test="${sending.response eq '0'}">
+																<span class="label label-danger">거절</span>
+															</c:if> <c:if test="${sending.response eq '1'}">
+																<span class="label label-success">수락</span>
+															</c:if> <c:if test="${sending.response eq '2'}">
+																<span class="label">보류</span>
+															</c:if></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+			<div class="col-lg-7" style="padding-right: 0px; padding-left: 0px;">
+				<div class="ibox-content" style="height: 371px;">
+					<div class="tabs-container">
+						<ul class="nav nav-tabs" role="tablist">
+							<li><a id="tab1" class="nav-link active" data-toggle="tab" href="#tab-1" >진료히스토리</a></li>
+							<li><a id="tab2" class="nav-link" data-toggle="tab" href="#tab-2" >협진히스토리</a></li>
+							<a class="view_all" onclick="subgoPage('/history/cooperation_history.do')" id="#changeUrl"  style="color:blue; float: right; font-size: 12px; padding-left: 390px; padding-top:12px;">전체보기 </a>
+<!-- 							<a class="view_all" onclick="subgoPage('/history/cooperation_history.do')" style="color:blue;float: right; font-size: 12px; padding-left: 400px; ">전체보기 </a> -->
+						</ul>
+						<div class="tab-content">
+							<div role="tabpanel" id="tab-1" class="tab-pane active">
+								<div class="panel-body" style="padding: 0px;">
+									<div class="col-md-12" style="padding-left:0px; padding-right:0px;">
+
+										<div class="ibox-content" style="height:315px;">
+
+											<table class="table table-hover" style="width:670px;">
+												<thead style="background: #66bf9ac4;">
+													<tr>
+														<th style="width: 10%;">환자명(협진이력)</th>
+														<th style="width: 3%;">생년월일</th>
+														<th style="width: 30%;">주상병</th>
+														<th style="width: 10%;">진료일</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${diagnosis}" var="history"  begin="0" end="7" step="1">
+														<tr >
+<%-- <div   onclick="window.open('historyDetail.do?comNo=${history.taNo}','','width=720, height=810, left=500, top=100');return false;"> --%>
+
+															<td>
+															${history.pName}[${history.pSex}]
+															<c:if test="${history.cReco eq '1'}">
+																	<i class="fa fa-group"></i>
+															</c:if>
+															</td>
+
+															<td>${history.pRnum}</td>
+															<td>${history.dName}</td>
+															<td>${history.mDate}</td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
+
+									</div>
+								</div>
+							</div>
+							<div role="tabpanel" id="tab-2" class="tab-pane">
+								<div class="panel-body" style="padding: 0px;">
+									<div class="col-md-12" style="padding-left:0px; padding-right:0px;">
+
+										<div class="ibox-content" style="height:315px;">
+
+											<table class="table table-hover" style="width:670px;">
+												<thead style="background: #66bf9ac4;">
+													<tr>
+														<th style="width: 3%;">환자명</th>
+														<th style="width: 2%;">생년월일</th>
+														<th style="width: 8%;">주상병</th>
+														<th style="width: 3%;">종료사유</th>
+														<th style="width: 8%;">협진일</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach items="${Cooperation}" var="cooperation" begin="0" end="8" step="1">
+														<tr onclick="window.open('historyDetail.do?comNo=${cooperation.taNo}','','width=720, height=810, left=500, top=100');return false;">
+															<td>${cooperation.pName}[${cooperation.pSex}]</td>
+															<td>${cooperation.pRnum}</td>
+															<td>${cooperation.coDisease}</td>
+															<td>${cooperation.endReason}</td>
+															<td>${cooperation.coStartDate}~${cooperation.endDate}</td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4" style="padding-right: 0px; padding-left: 0px;">
+				<div class="ibox-content" style="height: 390px;">
+
+
+				<div class="tabs-container">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li><a class="nav-link active" data-toggle="tab" href="#tab-10"> 좋아요</a></li>
+                            <li><a class="nav-link" data-toggle="tab" href="#tab-11">댓글</a></li>
+                        </ul>
+                        <div class="tab-content">
+                            <div role="tabpanel" id="tab-10" class="tab-pane active">
+                                <div class="panel-body" style="height: 332px; padding-top:0px; padding: 0px;">
+										<table class="table table-hover">
+												<c:forEach items="${likeList}" var="likeList" begin="0" end="5" step="1" >
+													<c:set var = "disNo" value="${likeList.disNo}"/>
+
+														<tbody>
+														<c:if test="${fn:substring(disNo,0,1) eq'O'}">
+																<tr onclick="subgoPage('/orderset/orderset_detail.do?from=list&oNo=${likeList.disNo}&dId=${doctorLogin.dId }')">
+																	<td style="width:15%; padding-top: 15px;"><span class="label label-primary"><i class="fa fa-thumbs-up"></i>오더세트</span></td>
+																	<td style="width:45%; padding-top: 13px;">[${likeList.disTitle}]에 공감하셨습니다
+																	<br><small><i class="fa fa-clock-o"></i>${likeList.rDate}</small></td>
+																</tr>
+														</c:if>
+														<c:if test="${fn:substring(disNo,0,2) eq 'DI'}">
+																<tr onclick="subgoPage('/case/detail.do?from=list&disNo=${likeList.disNo}&dId=${doctorLogin.dId }')">
+																	<td style="width:15%; padding-top: 15px;"><span class="label label-success"><i class="fa fa-thumbs-up"></i>C.D</span></td>
+																	<td style="width:45%; padding-top: 13px;">[${likeList.disTitle}]에 공감하셨습니다
+																	<br><small><i class="fa fa-clock-o"></i>${likeList.rDate}</small></td>
+																</tr>
+														</c:if>
+														<c:if test="${fn:substring(disNo,0,2) eq 'DR'}">
+																<tr onclick="subgoPage('/case/detail.do?from=list&disNo=${likeList.disNo}&dId=${doctorLogin.dId }')">
+																	<td style="width:15%; padding-top: 15px;"><span class="label label-success"><i class="fa fa-thumbs-up"></i>C.D</span></td>
+																	<td style="width:45%; padding-top: 13px;">[${likeList.disTitle}]댓글에 공감하셨습니다
+																	<br><small><i class="fa fa-clock-o"></i>${likeList.rDate}</small></td>
+																</tr>
+														</c:if>
+														</tbody>
+												</c:forEach>
+										</table>
+                                </div>
+                            </div>
+                            <div role="tabpanel" id="tab-11" class="tab-pane">
+                                <div class="panel-body" style="height: 332px; padding-top:0px; padding: 0px;">
+   										<table class="table table-hover">
+												<c:forEach items="${commentList}" var="commentList" begin="0" end="5" step="1" >
+													<c:set var = "logNum" value="${commentList.logNum}"/>
+
+														<tbody>
+														<c:if test="${fn:substring(logNum,0,1) eq'O'}">
+																<tr onclick="subgoPage('/orderset/orderset_detail.do?from=list&oNo=${commentList.codeNum}')">
+																	<td style="width:15%; padding-top: 15px;"><span class="label label-primary"><i class="fa fa-thumbs-up"></i>오더세트</span></td>
+																	<td style="width:45%; padding-top: 13px;">[${commentList.disTitle}]에 댓글등록을 하였습니다.
+																	<br><small><i class="fa fa-clock-o"></i>${commentList.logDate}</small></td>
+																</tr>
+														</c:if>
+														<c:if test="${fn:substring(logNum,0,1) eq 'D'}">
+																<tr onclick="subgoPage('/case/detail.do?from=list&disNo=${commentList.codeNum}')">
+																	<td style="width:15%; padding-top: 15px;"><span class="label label-success"><i class="fa fa-thumbs-up"></i>C.D</span></td>
+																	<td style="width:45%; padding-top: 13px;">[${commentList.disTitle}]에 댓글등록을 하였습니다.
+																	<br><small><i class="fa fa-clock-o"></i>${commentList.logDate}</small></td>
+																</tr>
+														</c:if>
+
+														</tbody>
+												</c:forEach>
+										</table>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+					</div>
+
+				</div>
+							<div class="col-md-4" style="padding-left: 5px; padding-right:5px;">
+				<div class="ibox-content" style="height: 390px; border: 1px solid lightgray;">
+					<h4 style="color: black;">
+						공지사항 <a class="view_all" onclick="subgoPage('/history/notice.do')" style="color:blue; float: right; font-size: 12px; padding-top: 10px;"> 전체보기 </a>
+					</h4>
+					<table class="table table-hover">
+
+						<tbody>
+							<c:forEach items="${noticeList}" var="noticeList">
+								<tr onclick="notice_read('${noticeList.nNo}',this)">
+									<td style="width:2%;">
+									<c:if test="${noticeList.noticeYn eq '1'}">
+											<img class="readchk" alt="프로필" src="<%=request.getContextPath()%>/resources/img/red.png" style="width: 8px; height: 8px;">
+									</c:if> </td>
+									<td>&nbsp;${noticeList.nTitle}</td>
+									<td style="width: 28%;"><i class="fa fa-calendar"></i>${noticeList.nDate}</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="col-md-4" style="background-color: white; height: 390px; padding-left: 5px; border-radius:5px; border: 1px solid lightgray;">
+				<h4 style="color: black; padding-top: 8px;">
+					&nbsp;My Log &emsp;<small style="color:red;">이력 보관기간은 14일입니다</small><a class="view_all" onclick="subgoPage('/history/mylog2.do')" style="color:blue; padding-top: 11px; float: right; font-size: 12px;"> 전체보기 </a>
+				</h4>
+				<div class="col-lg-12">
+					<div>
+						<div>
+							<c:forEach items="${logList}" var="logList">
+								<c:set var="logNum" value="${logList.logNum}"/>
+								<c:if test="${fn:substring(logNum,0,1) eq'O'}">
+									<div class="timeline-item width330">
+									<div class="row" style="margin-bottom: -15px;">
+										<div class="col-3 date" style="padding-left: 5px; padding-top: 10px;">
+											<i class="fa fa-flask"></i> <span style="margin-left: -5px;"></span><br>
+											<small class="text-navy">${logList.logDate}<br></small>
+										</div>
+										<div class="col-7 content no-top-border" style="padding-top:0px;">
+											<p class="m-b-xs">
+												<strong style="color:darkblue;">오더세트 댓글 등록</strong><br>
+												<medium>[${logList.disTitle}]</medium>
+											</p>
+											<c:choose>
+											<c:when test="${fn:length(logList.disContent) gt 35}">
+												<c:out value="${fn:substring(logList.disContent, 0, 29)}..">
+		        								</c:out>
+											</c:when>
+											<c:otherwise>
+												<c:out value="${logList.disContent}">
+												</c:out>
+											</c:otherwise>
+											</c:choose>
+										</div>
+									</div>
+								</div>
+								</c:if>
+								<c:if test="${fn:substring(logNum,0,1) eq'D'}">
+									<div class="timeline-item width330">
+									<div class="row">
+										<div class="col-3 date" style="padding-left: 5px; padding-top: 10px;">
+											<i class="fa fa-file-text"></i> <span style="margin-left: -5px;"></span><br>
+											<small class="text-navy">${logList.logDate}<br></small>
+										</div>
+										<div class="col-7 content no-top-border" style="padding-top:0px;">
+											<p class="m-b-xs">
+												<strong style="color:darkcyan;">CaseDiscussion 댓글 등록</strong><br>
+												<medium>[${logList.disTitle}]</medium>
+											</p>
+											<c:choose>
+											<c:when test="${fn:length(logList.disContent) gt 35}">
+												<c:out value="${fn:substring(logList.disContent, 0, 29)}..">
+		        								</c:out>
+											</c:when>
+											<c:otherwise>
+												<c:out value="${logList.disContent}">
+												</c:out>
+											</c:otherwise>
+											</c:choose>
+										</div>
+									</div>
+								</div>
+								</c:if>
+							</c:forEach>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			</div>
+
+		</div>
+<script>
+window.onload = function() {
+	$('.nav-tabs > li > a').each(function() {
+	    if($(this).is('.active')) {
+	        // true
+	    	console.log($(this).is('.active'));
+	    } else {
+	        // false
+	        $(this).addClass('nonActive');
+	    }
+	})
+}
+
+$(document).on('click','.nav-link' ,function(){
+
+	$('.nav-tabs > li > a').each(function() {
+	    if($(this).is('.active')) {
+	        // true
+	    	console.log($(this).is('.active'));
+	    } else {
+	        // false
+	        $(this).addClass('nonActive');
+	    }
+	})
+})
+
+
+window.onload = function() {
+	$('.nav-tabs > li > a').each(function() {
+	    if($(this).is('.active')) {
+	        // true
+	    	console.log($(this).is('.active'));
+	    } else {
+	        // false
+	        $(this).addClass('nonActive');
+	    }
+	})
+}
+
+$(document).on('click','.nav-link' ,function(){
+
+	$('.nav-tabs > li > a').each(function() {
+	    if($(this).is('.active')) {
+	        // true
+	    	console.log($(this).is('.active'));
+	    } else {
+	        // false
+	        $(this).addClass('nonActive');
+	    }
+	})
+})
+
+
+</script>
+<script>
+
+
+
+function notice_read(nNo,img){
+	console.log(nNo);
+	var dId = '${doctorLogin.dId}'
+	console.log(dId);
+
+	var data = {
+			"dId":dId,
+			"nNo":nNo,
+	}
+	$.ajax({
+		url:"<%=request.getContextPath()%>/notice/noticeRead",
+				type : 'post',
+				data : JSON.stringify(data),
+				contentType : 'application/json',
+				success : function(data) {
+
+						$(img).find("img").remove();
+						window.open('notice_detail.do?nNo='+nNo,'','width=600, height=550');
+
+				},
+				error : function(error) {
+					alert('실패했습니다.');
+					AjaxErrorSecurityRedirectHandler(error.status);
+				}
+			});
+
+		}
+
+function cooperation_read(notiNo,img){
+	console.log(notiNo);
+	var dId = '${doctorLogin.dId}'
+	console.log(dId);
+
+	var data = {
+
+			"notiNo":notiNo,
+	}
+	$.ajax({
+		url:"<%=request.getContextPath()%>/cooperation/readCooperation",
+				type : 'post',
+				data : JSON.stringify(data),
+				contentType : 'application/json',
+				success : function(data) {
+						$(img).find("img").remove();
+						window.open('cooperation_receive.do?notiNo='+notiNo,'','width=750, height=695');
+				},
+				error : function(error) {
+					alert('실패했습니다.');
+					AjaxErrorSecurityRedirectHandler(error.status);
+				}
+			});
+
+		}
+</script>
+
+</body>
+</html>

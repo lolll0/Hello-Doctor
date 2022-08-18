@@ -1,0 +1,57 @@
+package kr.or.ddit.controller;
+
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import kr.or.ddit.dto.DoctorVO;
+import kr.or.ddit.service.MainComRecoService;
+import kr.or.ddit.service.MainIssueService;
+
+@Controller
+@RequestMapping("main")
+public class MainController {
+
+	@Autowired
+	private MainIssueService isService;
+
+	@Autowired
+	private MainComRecoService comRecoService;
+
+
+	// 홈에서 특이사항 리스트 출력...
+	@RequestMapping("/index")
+	public String mainissuelist( Model model,HttpServletRequest request) throws SQLException {
+		String url ="main/index";
+		
+		HttpSession session = request.getSession();
+		DoctorVO doctorLogin = (DoctorVO) session.getAttribute("doctorLogin");
+		String dId = doctorLogin.getdId();
+		
+
+		Map<String, Object> dataMap = null;
+		Map<String, Object> comRecoDataMap = null;
+
+		// 홈에서 특이사항 리스트 출력...
+		dataMap= isService.mainIssueList(dId);
+
+		// 홈에서 최근 협진 리스트 출력..
+		comRecoDataMap = comRecoService.mainComRecoList(dId);
+
+		System.out.println("comRecoDataMap@!#@~#~@~@!~!@@!~"+comRecoDataMap);
+
+		model.addAttribute("dataMap", dataMap);
+		model.addAttribute("comRecoDataMap",comRecoDataMap);
+
+		return url;
+
+	}
+}

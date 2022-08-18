@@ -1,0 +1,142 @@
+package kr.or.ddit.service;
+
+import java.awt.Color;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+
+import kr.or.ddit.command.SearchCriteria;
+import kr.or.ddit.dao.CoTaskDAO;
+import kr.or.ddit.dao.MediRecoDAO;
+import kr.or.ddit.dao.SchedulerDAO;
+import kr.or.ddit.dto.ChartFormVO;
+import kr.or.ddit.dto.CoMedVO;
+import kr.or.ddit.dto.MyOrderListVO;
+import kr.or.ddit.dto.SchedulerVO;
+import kr.or.ddit.dto.SchedulerVO2;
+import kr.or.ddit.service.MediRecoServiceImpl.SortByDate;
+
+public class SchedulerServiceImpl implements SchedulerService{
+
+	private SchedulerDAO schedulerDao;
+	private MediRecoDAO mediRecoDAO;
+	private CoTaskDAO coTaskDAO;
+
+
+	public void setMediRecoDAO(MediRecoDAO mediRecoDAO) {
+		this.mediRecoDAO = mediRecoDAO;
+	}
+
+	public void setCoTaskDAO(CoTaskDAO coTaskDAO) {
+		this.coTaskDAO = coTaskDAO;
+	}
+	public void setSchedulerDao(SchedulerDAO schedulerDao) {
+		this.schedulerDao = schedulerDao;
+	}
+
+
+
+	@Override
+	public Map<String,Object> TodayMyList(String dId) throws SQLException {
+		List<ChartFormVO> result = new ArrayList<ChartFormVO>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<ChartFormVO> medilist = mediRecoDAO.selectAllReco(dId);
+		List<ChartFormVO> colist = coTaskDAO.selectAllReco(dId);
+		List<CoMedVO> selectbox = schedulerDao.selectbox(dId);
+		for (int i = 0; i < medilist.size(); i++) {
+
+			result.add(medilist.get(i));
+		}
+		for (int i = 0; i < colist.size(); i++) {
+			result.add(colist.get(i));
+		}
+
+		Collections.sort(result, new SortByDate());
+		//성별 구하기
+		for (int i = 0; i < result.size(); i++) {
+
+		}
+		System.out.println(result);
+		map.put("result", result);
+		map.put("selectbox",selectbox);
+		return map;
+	}
+
+	class SortByDate implements Comparator<ChartFormVO> {
+
+		@Override
+		public int compare(ChartFormVO o1, ChartFormVO o2) {
+			// TODO Auto-generated method stub
+			return (o1.getReservedate()).compareTo((String) o2.getReservedate());
+		}
+	}
+
+	@Override
+	public List<SchedulerVO> Cooperation(String dId) throws SQLException {
+		Random rand = new Random();
+		List<SchedulerVO> schedulerList = new ArrayList<SchedulerVO>();
+
+
+
+		List<String> allcoNo = schedulerDao.selectAllcoNo(dId);
+
+		for(String coNo: allcoNo ) {
+			  int r = rand.nextInt(256);
+			    int g = rand.nextInt(256);
+			    int b = rand.nextInt(256);
+
+			    // mix the color
+
+
+			String color = "rgb("+r+","+g+","+b+")";
+
+			List<SchedulerVO> temp = schedulerDao.selectAllTask(coNo);
+			for( SchedulerVO vo :  temp) {
+					vo.setColor(color);
+					schedulerList.add(vo);
+			}
+
+
+		}
+		return schedulerList;
+	}
+
+	@Override
+	public List<SchedulerVO2> selectCoScheduler(String coNo) throws SQLException {
+		Random rand = new Random();
+		List<SchedulerVO2> schedulerList = new ArrayList<SchedulerVO2>();
+
+		List<String> coDoctorList = schedulerDao.selectCoDoctor(coNo);
+
+		for(String dId : coDoctorList) {
+			  int r = rand.nextInt(256);
+			    int g = rand.nextInt(256);
+			    int b = rand.nextInt(256);
+			    // mix the color
+			String color = "rgb("+r+","+g+","+b+")";
+			SchedulerVO tempvo = new SchedulerVO();
+			tempvo.setdId(dId);
+			tempvo.setCoNo(coNo);
+			List<SchedulerVO2> temp = schedulerDao.selectCoScheduler(tempvo);
+
+			for( SchedulerVO2 vo :  temp) {
+					vo.setColor(color);
+					schedulerList.add(vo);
+			}
+
+		}
+		return schedulerList;
+	}
+
+	@Override
+	public List<SchedulerVO2> selectMyCoScheduler(SchedulerVO vo) throws SQLException {
+		List<SchedulerVO2> result = schedulerDao.selectCoScheduler(vo);
+		return result;
+	}
+
+}

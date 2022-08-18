@@ -1,0 +1,94 @@
+package kr.or.ddit.service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import kr.or.ddit.dao.Case_DAO;
+import kr.or.ddit.dao.HistoryDAO;
+import kr.or.ddit.dto.CaseVO;
+import kr.or.ddit.dto.HistoryVO;
+
+public class HistoryServiceImpl implements HistoryService{
+	private HistoryDAO historyDAO;
+	private Case_DAO casedao;
+
+	public void setHistoryDAO(HistoryDAO historyDAO) {
+		this.historyDAO = historyDAO;
+	}
+	public void setCasedao(Case_DAO casedao) {
+		this.casedao = casedao;
+	}
+
+	@Override
+	public List<HistoryVO> diagnosisHistory(String dId) throws SQLException {
+		List<HistoryVO> diagnosis = historyDAO.diagnosisHistory(dId);
+		System.out.println("진료히스토리 서비스"+diagnosis.get(0));
+		return diagnosis;
+	}
+
+	@Override
+	public List<HistoryVO> CooperationHistory(String dId) throws SQLException {
+		List<HistoryVO> cooperation = historyDAO.CooperationHistory(dId);
+		System.out.println("협진히스토리 서비스"+cooperation.get(0));
+		return cooperation;
+	}
+
+	@Override
+	public List<HistoryVO> selectbyMno(String mNo) throws SQLException {
+		List<HistoryVO> selectbyMno = historyDAO.selectbyMno(mNo);
+		return null;
+	}
+
+	@Override
+	public List<HistoryVO> selectbyComNo(String comNo) throws SQLException {
+
+		return null;
+	}
+
+	@Override
+	public List<HistoryVO> alarmList(String dId) throws SQLException {
+		List<HistoryVO> alarm = historyDAO.alarmList(dId);
+		return alarm;
+	}
+
+	@Override
+	public List<HistoryVO> NoticeList(String dId) throws SQLException {
+		List<HistoryVO> notice = historyDAO.NoticeList(dId);
+		return notice;
+	}
+
+	@Override
+	public List<HistoryVO> sendList(String dId) throws SQLException {
+		List<HistoryVO> send = historyDAO.sendList(dId);
+		System.out.println("서비스 보내기"+send);
+		return send;
+	}
+
+	@Override
+	public List<HistoryVO> CaseDiscussionList(String dId) throws SQLException {
+		List<HistoryVO> alarm = historyDAO.CaseDiscussionList(dId);
+		return alarm;
+	}
+
+	@Override
+	public List<HistoryVO> LikeOrderList(String dId) throws SQLException {
+		List<HistoryVO> alarm = historyDAO.LikeOrderList(dId);
+		return alarm;
+	}
+
+	@Override
+	public List<CaseVO> selectCase() throws SQLException {
+		return casedao.selectCase();
+	}
+	@Override
+	public List<HistoryVO> Notice(String dId) throws SQLException {
+		List<HistoryVO> notice = historyDAO.Notice(dId);
+		return notice;
+	}
+
+//	@Override
+//	public List<HistoryVO> LogHistory(String dId) throws SQLException {
+//		List<HistoryVO> log = historyDAO.LogList(dId);
+//		return log;
+//	}
+}

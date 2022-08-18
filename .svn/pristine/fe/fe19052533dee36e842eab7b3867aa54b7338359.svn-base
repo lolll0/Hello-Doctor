@@ -1,0 +1,52 @@
+package kr.or.ddit.dto;
+
+import java.util.Date;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+public class LogHistoryVO {
+private String	hiNo       ;
+private String	comNo      ;
+private String	hiContent  ;
+private String	hiCla      ;
+private Date	hiDate     ;
+public String getHiNo() {
+	return hiNo;
+}
+public void setHiNo(String hiNo) {
+	this.hiNo = hiNo;
+}
+public String getComNo() {
+	return comNo;
+}
+public void setComNo(String comNo) {
+	this.comNo = comNo;
+}
+public String getHiContent() {
+	return hiContent;
+}
+public void setHiContent(String hiContent) {
+	this.hiContent = hiContent;
+}
+public String getHiCla() {
+	return hiCla;
+}
+public void setHiCla(String hiCla) {
+	this.hiCla = hiCla;
+}
+public Date getHiDate() {
+	return hiDate;
+}
+public void setHiDate(Date hiDate) {
+	this.hiDate = hiDate;
+}
+
+@Override
+public String toString() {
+	return ToStringBuilder.reflectionToString(this, ToStringStyle.JSON_STYLE);
+}
+
+
+
+}
